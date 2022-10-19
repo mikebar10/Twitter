@@ -5,6 +5,13 @@
   box-sizing: border-box;
   font-family: "Open Sans", sans-serif;
 }
+#main{
+  width: 100%;
+}
+p{
+  font-size: 80%;
+  
+}
 body {
   display: flex;
   align-items: center;
@@ -15,7 +22,17 @@ body {
 }
 header{
   background-color: darkblue;
+  width: 100%;
 }
+#head{
+  position: fixed;
+  width: 100%;
+  top: 0;
+}
+#bottom{
+  padding-top: 80px;
+}
+
 .hidden{
   display:none;
 }
@@ -110,10 +127,28 @@ header{
   justify-content: space-between;
 }
 .tweet-box .bottom {
-  align-text: left;
+  text-align: left;
 }
 .bottom .icons {
   display: inline-flex;
+}
+.user li{
+  list-style: none;
+  color: #1da1f2;
+  font-size: 20px;
+  cursor: pointer;
+  display: inline-block;
+  align-items: center;
+  justify-content: center;
+}
+#tweetLikes li{
+  list-style: none;
+  font-size: 20px;
+  cursor: pointer;
+  display: inline-block;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
 }
 .icons li {
   list-style: none;
@@ -174,8 +209,12 @@ header{
   color: red;
 }
 
+#profilePic{
+  border-radius: 100px;
+  width: 50px;
+}
 
-#loginButton {
+.otherButton {
   padding: 9px 18px;
   border: none;
   outline: none;
@@ -190,9 +229,51 @@ header{
   transition: background 0.2s ease;
 }
 
-#loginButton:hover {
+.otherButton:hover {
   background: yellow;
   color: blue;
   opacity: 1;
 }
 
+.followButton{
+  padding: 9px 18px;
+  border: none;
+  outline: none;
+  border-radius: 50px;
+  font-size: 16px;
+  font-weight: 700;
+  background: yellow;
+  color: blue;
+  opacity: 1;
+  cursor: pointer;
+  pointer-events: auto;
+  transition: background 0.2s ease;
+}
+
+.followButton:hover{
+  background: #1da1f2;
+  color: #fff;
+  opacity: 0.5;
+  
+}
+
+.nofollowButton{
+  padding: 9px 18px;
+  border: none;
+  outline: none;
+  border-radius: 50px;
+  font-size: 16px;
+  font-weight: 700;
+  background: #1da1f2;
+  color: #fff;
+  opacity: 0.5;
+  cursor: pointer;
+  pointer-events: auto;
+  transition: background 0.2s ease;
+}
+
+.nofollowButton:hover{
+  background: yellow;
+  color: blue;
+  opacity: 1;
+}
