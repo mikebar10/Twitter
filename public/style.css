@@ -1,17 +1,21 @@
 @import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap");
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
   font-family: "Open Sans", sans-serif;
 }
-#main{
+
+#main {
   width: 100%;
+  height: 100%;
 }
-p{
+
+p {
   font-size: 80%;
-  
 }
+
 body {
   display: flex;
   align-items: center;
@@ -20,26 +24,50 @@ body {
   background: blue;
   color: yellow;
 }
-header{
+
+#userData li {
+  list-style: none;
+  cursor: pointer;
+  display: inline-block;
+  align-items: center;
+}
+
+header {
   background-color: darkblue;
   width: 100%;
 }
-#head{
+
+#head {
   position: fixed;
   width: 100%;
   top: 0;
-}
-#bottom{
-  padding-top: 80px;
+  z-index: 99;
 }
 
-.hidden{
-  display:none;
+#bottom {
+  position: absolute;
+  top: 80px;
+  width: 100%;
+  ;
+  z-index: 1
 }
+
+.hidden {
+  display: none;
+}
+
 ::selection {
   color: yellow;
   background: #1da1f2;
 }
+
+#picUploader {
+  text-align: center;
+  justify-content: center;
+}
+
+
+
 .wrapper {
   background: yellow;
   color: blue;
@@ -48,22 +76,45 @@ header{
   border-radius: 15px;
   padding: 25px 25px 15px 25px;
   box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.1);
+  margin: 5px;
 }
+
+.userListPoint {
+  display: flex;
+  align-items: center;
+}
+
+.userFollowList {
+  display: flex;
+  align-items: center;
+}
+
+.userName {
+  margin: 10px;
+}
+
+
 .input-box {
   padding-top: 10px;
   border-bottom: 1px solid blue;
 }
+
 .tweet-box {
   padding-top: 10px;
   border-bottom: 1px solid blue;
   text-align: left;
 }
+
 .tweet-area {
   text-align: left;
+  padding-top: 20px;
+  padding-bottom: 20px;
 }
+
 .wrapper .bottom {
   text-align: left;
 }
+
 .input-box .tweet-area {
   position: relative;
   min-height: 130px;
@@ -71,9 +122,11 @@ header{
   overflow-y: auto;
   text-align: left;
 }
+
 .tweet-area::-webkit-scrollbar {
   width: 0px;
 }
+
 .tweet-area .placeholder {
   position: absolute;
   margin-top: -3px;
@@ -81,6 +134,7 @@ header{
   color: #98a5b1;
   pointer-events: none;
 }
+
 .tweet-area .input {
   outline: none;
   font-size: 17px;
@@ -89,13 +143,12 @@ header{
   word-break: break-all;
   text-align: left;
 }
+
 .tweet-box .tweet-area {
   word-wrap: break-word;
   word-break: break-all;
 }
-#userPic {
-  width: 10px;
-}
+
 .user {
   border-bottom: 1px solid blue;
   padding: 8px;
@@ -105,6 +158,7 @@ header{
   position: relative;
   z-index: 5;
 }
+
 .tweet-area .readonly {
   position: absolute;
   top: 0;
@@ -113,9 +167,11 @@ header{
   color: transparent;
   background: transparent;
 }
+
 .readonly .highlight {
   background: #fd9bb0;
 }
+
 .icons li:hover {
   background: #e7f5fe;
 }
@@ -126,22 +182,23 @@ header{
   align-items: center;
   justify-content: space-between;
 }
+
 .tweet-box .bottom {
   text-align: left;
 }
+
 .bottom .icons {
   display: inline-flex;
 }
-.user li{
+
+.user li {
   list-style: none;
-  color: #1da1f2;
-  font-size: 20px;
   cursor: pointer;
   display: inline-block;
   align-items: center;
-  justify-content: center;
 }
-#tweetLikes li{
+
+#tweetLikes li {
   list-style: none;
   font-size: 20px;
   cursor: pointer;
@@ -150,6 +207,7 @@ header{
   justify-content: center;
   border-radius: 50%;
 }
+
 .icons li {
   list-style: none;
   color: #1da1f2;
@@ -164,11 +222,13 @@ header{
   border-radius: 50%;
   transition: background 0.2s ease;
 }
+
 .bottom .content {
   display: flex;
   align-items: center;
   justify-content: center;
 }
+
 .bottom .counter {
   color: #333;
   display: none;
@@ -177,6 +237,7 @@ header{
   padding-right: 15px;
   border-right: 1px solid #aab8c2;
 }
+
 #tweetBottom button {
   padding: 9px 18px;
   border: none;
@@ -191,10 +252,12 @@ header{
   pointer-events: none;
   transition: background 0.2s ease;
 }
+
 #tweetBottom button.active {
   opacity: 1;
   pointer-events: auto;
 }
+
 #tweetBottom button:hover {
   background: blue;
   color: yellow;
@@ -205,13 +268,25 @@ header{
   width: 30px;
   border-radius: 80px;
 }
+
 #heart {
   color: red;
 }
 
-#profilePic{
-  border-radius: 100px;
-  width: 50px;
+#profilePicProfile {
+  width: 80px;
+  height: 80px;
+}
+
+#nickname {
+  font-size: x-large;
+}
+
+.profilePic {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 50%;
 }
 
 .otherButton {
@@ -230,12 +305,12 @@ header{
 }
 
 .otherButton:hover {
-  background: yellow;
-  color: blue;
+  background: blue;
+  color: yellow;
   opacity: 1;
 }
 
-.followButton{
+.followButton {
   padding: 9px 18px;
   border: none;
   outline: none;
@@ -250,14 +325,14 @@ header{
   transition: background 0.2s ease;
 }
 
-.followButton:hover{
+.followButton:hover {
   background: #1da1f2;
   color: #fff;
   opacity: 0.5;
-  
+
 }
 
-.nofollowButton{
+.nofollowButton {
   padding: 9px 18px;
   border: none;
   outline: none;
@@ -272,8 +347,55 @@ header{
   transition: background 0.2s ease;
 }
 
-.nofollowButton:hover{
+.nofollowButton:hover {
   background: yellow;
   color: blue;
   opacity: 1;
+}
+
+#followers {
+  width: 60%;
+  border-radius: 20px;
+}
+
+#following {
+  width: 60%;
+  border-radius: 20px;
+}
+
+#followers:hover {
+  background-color: blue;
+  color: yellow;
+}
+
+#following:hover {
+  background-color: blue;
+  color: yellow;
+}
+
+#socialInfo {
+  display: flex;
+  justify-content: center;
+}
+
+.time {
+  padding-top: 10px;
+}
+
+#selection {
+  padding: 5px;
+}
+
+#selection:hover {
+  background-color: lemonchiffon;
+  border-radius: 20px;
+}
+
+#selectionBlue {
+  padding: 5px;
+}
+
+#selectionBlue:hover {
+  background-color: skyblue;
+  border-radius: 20px;
 }
