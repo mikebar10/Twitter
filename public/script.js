@@ -39,6 +39,7 @@ let tweetJSON = {
   },
 };
 
+
 let renderLogin = () => {
   $("#main").html("");
   $("#main").append(`
@@ -179,8 +180,8 @@ let renderUserProfile = (uid) => {
     <div class="col">
       <div class="wrapper">
         <div id="socialInfo">
-          <div id="followers"></div>
-          <div id="following"></div>
+          <div id="followers">Followers: 0</div>
+          <div id="following">Following: 0</div>
         </div>
         <div id="noTweets"></div>
       </div>
@@ -267,7 +268,10 @@ let renderUserProfile = (uid) => {
         followingCount++;
       }
     });
+    $("#following").html(``);
     $("#following").html(`Following: ${followingCount}`);
+  }).catch((e1) => {
+
   })
   let followersRef = rtdb.ref(db, `users/${uid}/followers`);
   rtdb.get(followersRef).then(ss => {
@@ -278,7 +282,10 @@ let renderUserProfile = (uid) => {
         followersCount++;
       }
     });
+    $("#followers").html(``);
     $("#followers").html(`Followers: ${followersCount}`);
+  }).catch((e2) => {
+
   })
 
   $(`#signOutButton`).on('click', () => {
@@ -524,14 +531,31 @@ let renderClickedTweet = (uidd) => {
 
 }
 
+
 let writeUser = (newUser) => {
 
-  let name = newUser.email.substr(0, newUser.email.indexOf('@'));
-  let newUsrRef = rtdb.ref(db, "users/" + newUser.uid + "/nickname");
+  let userCheck = rtdb.ref(db, `users/${newUser.uid}`)
+  rtdb.get(userCheck).then(ss => {
+    if (ss.val() == null) {
+      let uRef = rtdb.ref(db, `users/${newUser.uid}/following`);
+      rtdb.set(uRef, '');
+      let name = newUser.email.substr(0, newUser.email.indexOf('@'));
+      let newUsrRef = rtdb.ref(db, "users/" + newUser.uid + "/nickname");
 
-  rtdb.set(newUsrRef, name).catch(error => {
-    console.log(error.message)
-  });
+      rtdb.set(newUsrRef, name).catch(error => {
+        console.log(error.message)
+      });
+
+      let defaultPicURL = "https://firebasestorage.googleapis.com/v0/b/twitter-fc080.appspot.com/o/icon-chicken-suitable-for-garden-symbol-blue-eyes-style-simple-design-editable-design-template-simple-symbol-illustration-vector.jpg?alt=media&token=461295e5-c833-4bc5-b488-3676afcfe3eb";
+      let defaultPicRef = rtdb.ref(db, `users/${newUser.uid}/profilePic`);
+
+      rtdb.set(defaultPicRef, defaultPicURL).catch(error => {
+        console.log(error.message)
+      });
+    }
+  })
+
+
 
   $(`#signOutButton`).on('click', () => {
     signOut(auth).then(() => {
@@ -809,7 +833,9 @@ let usrRef = rtdb.ref(db, "users/");
 var users = [];
 rtdb.get(usrRef).then(ss => {
   ss.forEach(childss => {
-    users.push(childss);
+    if (loggedUser.uid != childss.key) {
+      users.push(childss);
+    }
   })
   users.forEach((i) => {
     renderFollowUser(i, i.key);
@@ -825,7 +851,7 @@ let renderTweet = (tObj, uuid) => {
       <div class="tweet-box">
         <div data-uuid="${uuid}" class="user">
           <div id="selection">
-            <li><img src="${tObj.author.pic}" class="profilePic"></li>
+            <li><img data-uuid="${uuid}" src="${tObj.author.pic}" class="profilePic"></li>
             <li><div id="nicknameOnTweet">@${tObj.author.nickname}</div></li>
           </div>
         </div>
@@ -863,7 +889,7 @@ let renderTweet = (tObj, uuid) => {
   let userPicRef = rtdb.ref(db, `users/${tObj.authorId}/profilePic`);
   rtdb.get(userPicRef).then(ss => {
     let profilePicURL = ss.val();
-    $(".profilePic").attr("src", `${profilePicURL}`);
+    $(`[data-uuid=${uuid}].profilePic`).attr("src", `${profilePicURL}`);
     let userPicTweetRef = rtdb.ref(db, `tweets/${uuid}/author/pic`);
     rtdb.set(userPicTweetRef, profilePicURL)
   })
@@ -1079,8 +1105,8 @@ rtdb.onChildAdded(tweetRef, (ss) => {
     let followIds = Object.keys(data).filter(fid => {
       return data[fid];
     })
-    for (var i = 0; i < followIds.length; i++) {
-      if (followIds[i] == ss.val().authorId) {
+    for (var i = 0; i <= followIds.length; i++) {
+      if ((loggedUser.uid == ss.val().authorId) || (followIds[i] == ss.val().authorId)) {
         renderTweet(tObj, ss.key);
         likeTweet();
       }
