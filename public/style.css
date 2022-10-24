@@ -16,6 +16,14 @@ p {
   font-size: 80%;
 }
 
+#followProfile {
+  display: flex;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
 body {
   display: flex;
   align-items: center;
@@ -24,6 +32,7 @@ body {
   background: blue;
   color: yellow;
 }
+
 
 #userData li {
   list-style: none;
@@ -35,6 +44,9 @@ body {
 header {
   background-color: darkblue;
   width: 100%;
+  max-height: 80px;
+  position: fixed;
+  top: 0;
 }
 
 #head {
@@ -42,14 +54,14 @@ header {
   width: 100%;
   top: 0;
   z-index: 99;
+  max-height: 80px;
 }
 
 #bottom {
   position: absolute;
   top: 80px;
   width: 100%;
-  ;
-  z-index: 1
+  z-index: 1;
 }
 
 .hidden {
@@ -139,15 +151,11 @@ header {
   outline: none;
   font-size: 17px;
   min-height: inherit;
-  word-wrap: break-word;
-  word-break: break-all;
+  word-wrap: normal;
   text-align: left;
 }
 
-.tweet-box .tweet-area {
-  word-wrap: break-word;
-  word-break: break-all;
-}
+.tweet-box .tweet-area {}
 
 .user {
   border-bottom: 1px solid blue;
@@ -172,9 +180,6 @@ header {
   background: #fd9bb0;
 }
 
-.icons li:hover {
-  background: #e7f5fe;
-}
 
 .bottom {
   display: flex;
@@ -208,20 +213,6 @@ header {
   border-radius: 50%;
 }
 
-.icons li {
-  list-style: none;
-  color: #1da1f2;
-  font-size: 20px;
-  margin: 0 2px;
-  height: 38px;
-  width: 38px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  transition: background 0.2s ease;
-}
 
 .bottom .content {
   display: flex;
@@ -326,10 +317,25 @@ header {
 }
 
 .followButton:hover {
-  background: #1da1f2;
-  color: #fff;
-  opacity: 0.5;
+  background-color: maroon;
+  color: red;
+  border-color: red;
+  opacity: 1;
+}
 
+#profileFollowBtn:hover {
+  background-color: maroon;
+  color: red;
+  border-color: red;
+  opacity: 1;
+}
+
+.followButton:hover span {
+  display: none;
+}
+
+.followButton:hover:before {
+  content: "Unfollow"
 }
 
 .nofollowButton {
@@ -348,8 +354,6 @@ header {
 }
 
 .nofollowButton:hover {
-  background: yellow;
-  color: blue;
   opacity: 1;
 }
 
@@ -387,8 +391,8 @@ header {
 }
 
 #selection:hover {
-  background-color: lemonchiffon;
-  border-radius: 20px;
+  background-color: rgb(218, 208, 101);
+  border-radius: 10px;
 }
 
 #selectionBlue {
@@ -398,4 +402,9 @@ header {
 #selectionBlue:hover {
   background-color: skyblue;
   border-radius: 20px;
+}
+
+#profileFollowBtn {
+  background: #1da1f2;
+  color: #fff;
 }

@@ -46,7 +46,7 @@ let renderLogin = () => {
   <div id="head">
   <header class="p-3 text-bg-dark">
   <div class="container">
-    <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+    <div class="d-flex align-items-center justify-content-center justify-content-lg-start">
       <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
         <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap"><use xlink:href="#bootstrap"/></svg>
       </a>
@@ -57,9 +57,7 @@ let renderLogin = () => {
         <li><a href="/users" class="nav-link px-2 text-white">Users</a></li>
       </ul>
 
-      <div class="text-end">
-        <button type="button" id="signOutButton" class="btn btn-warning">Sign-out</button>
-      </div>
+     
     </div>
   </div>
 </header>
@@ -154,7 +152,7 @@ let renderUserProfile = (uid) => {
   <div id="head">
   <header class="p-3 text-bg-dark">
     <div class="container">
-      <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+      <div class="d-flex align-items-center justify-content-center justify-content-lg-start">
         <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
           <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap">
             <use xlink:href="#bootstrap" />
@@ -175,7 +173,7 @@ let renderUserProfile = (uid) => {
   </header>
 </div>
 <div id="bottom">
-<div class="container text-center">
+<div class="container-fluid text-center">
   <div class="row align-items-top">
     <div class="col">
       <div class="wrapper">
@@ -209,6 +207,11 @@ let renderUserProfile = (uid) => {
 </div>
 </div>
   `);
+
+  if (uid != loggedUser.uid) {
+    $("#picUploader").html('');
+    renderFollowUserProfile(uid);
+  }
 
 
   $(`#uploadImg`).on('click', (evt) => {
@@ -387,7 +390,7 @@ let renderClickedTweet = (uidd) => {
   <div id="head">
   <header class="p-3 text-bg-dark">
   <div class="container">
-    <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+    <div class="d-flex align-items-center justify-content-center justify-content-lg-start">
       <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
         <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap"><use xlink:href="#bootstrap"/></svg>
       </a>
@@ -484,10 +487,6 @@ let renderClickedTweet = (uidd) => {
     }
     counter.innerText = maxLength - currentlength;
     if (currentlength > maxLength) {
-      let overText = element.innerText.substr(maxLength); //extracting over texts
-      overText = `<span class="highlight">${overText}</span>`; //creating new span and passing over texts
-      text = element.innerText.substr(0, maxLength) + overText; //passing overText value in textTag variable
-      readonlyInput.style.zIndex = "1";
       counter.style.color = "#e0245e";
       button.classList.remove("active");
     } else {
@@ -512,7 +511,6 @@ let renderClickedTweet = (uidd) => {
       rtdb.set(newTweetRef, tweetJSON);
       let userTweetsRef = rtdb.ref(db, `users/${loggedUser.uid}/tweets`)
       rtdb.push(userTweetsRef, tweetId);*/
-
       rtdb.push(replyRef, tweetJSON);
       $(".editable").empty();
       placeholder.style.display = "block";
@@ -523,7 +521,6 @@ let renderClickedTweet = (uidd) => {
   rtdb.onChildAdded(replyRef, (ss) => {
     let tObj = ss.val();
     rtdb.get(replyRef).then((ss1) => {
-      console.log(tObj)
       renderReply(tObj, ss.key);
       likeTweet();
     });
@@ -638,10 +635,7 @@ let homeListiners = () => {
     }
     counter.innerText = maxLength - currentlength;
     if (currentlength > maxLength) {
-      let overText = element.innerText.substr(maxLength); //extracting over texts
-      overText = `<span class="highlight">${overText}</span>`; //creating new span and passing over texts
-      text = element.innerText.substr(0, maxLength) + overText; //passing overText value in textTag variable
-      readonlyInput.style.zIndex = "1";
+
       counter.style.color = "#e0245e";
       button.classList.remove("active");
     } else {
@@ -660,7 +654,7 @@ let renderHome = () => {
   <div id="head">
   <header class="p-3 text-bg-dark">
   <div class="container">
-    <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+    <div class="d-flex align-items-center justify-content-center justify-content-lg-start">
       <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
         <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap"><use xlink:href="#bootstrap"/></svg>
       </a>
@@ -718,7 +712,7 @@ let renderUsers = () => {
   <div id="head">
   <header class="p-3 text-bg-dark">
   <div class="container">
-    <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+    <div class="d-flex align-items-center justify-content-center justify-content-lg-start">
       <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
         <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap"><use xlink:href="#bootstrap"/></svg>
       </a>
@@ -755,8 +749,42 @@ let renderUsers = () => {
 
 }
 
+let renderFollowUserProfile = (uuid) => {
+  $(`#picUploader`).append(`<div id="followProfile"  class='userFollowList'><button id="profileNoFollowBtn" class="nofollowButton" data-uuid="${uuid}">Follow</button><button id="profileFollowBtn" class="followButton hidden" data-uuid="${uuid}"><span>Following</span></button></div>`);
+  let followuuid;
+  $(".followButton").off("click")
+  $(".followButton").on("click", (event) => {
+    followuuid = $(event.currentTarget).attr("data-uuid");
+    let followref = rtdb.ref(db, `/users/${loggedUser.uid}/following/${followuuid}`);
+    rtdb.set(followref, false);
+    let followrerref = rtdb.ref(db, `/users/${followuuid}/followers/${loggedUser.uid}`);
+    rtdb.set(followrerref, false);
+  });
+  $(".nofollowButton").off("click")
+  $(".nofollowButton").on("click", (event) => {
+    followuuid = $(event.currentTarget).attr("data-uuid");
+    let followref = rtdb.ref(db, `/users/${loggedUser.uid}/following/${followuuid}`);
+    rtdb.set(followref, true);
+    let followerref = rtdb.ref(db, `/users/${followuuid}/followers/${loggedUser.uid}`);
+    rtdb.set(followerref, true);
+  });
+
+  let followinguid = rtdb.ref(db, `users/${loggedUser.uid}/following/${uuid}`);
+  rtdb.onValue(followinguid, ss => {
+    let following = ss.val();
+    if (following) {
+      $(`[data-uuid=${uuid}].nofollowButton`).addClass("hidden");
+      $(`[data-uuid=${uuid}].followButton`).removeClass("hidden");
+    }
+    else {
+      $(`[data-uuid=${uuid}].nofollowButton`).removeClass("hidden");
+      $(`[data-uuid=${uuid}].followButton`).addClass("hidden");
+    }
+  })
+}
+
 let renderFollowUserList = (tObj, uuid) => {
-  $(`#users`).append(`<div  class='userFollowList'><div id="selectionBlue" class="userName" data-uuid="${uuid}">@${tObj.val().nickname}</div> <button class="nofollowButton" data-uuid="${uuid}">Follow</button><button class="followButton hidden" data-uuid="${uuid}">Unfollow</button></div>`);
+  $(`#users`).append(`<div  class='userFollowList'><div id="selectionBlue" class="userName" data-uuid="${uuid}">@${tObj.val().nickname}</div> <button class="nofollowButton" data-uuid="${uuid}">Follow</button><button class="followButton hidden" data-uuid="${uuid}"><span>Following</span></button></div>`);
   let followuuid;
   $(".followButton").off("click")
   $(".followButton").on("click", (event) => {
@@ -790,9 +818,9 @@ let renderFollowUserList = (tObj, uuid) => {
 }
 
 let renderFollowUser = (tObj, uuid) => {
-  $(`#usersList`).append(`<div  class="userListPoint"><div id="selectionBlue" class="userName" data-uuid="${uuid}">@${tObj.val().nickname}</div> <button class="nofollowButton" data-uuid="${uuid}">Follow</button><button class="followButton hidden" data-uuid="${uuid}">Unfollow</button></div>`);
+  $(`#usersList`).append(`<div  class="userListPoint"><div id="selectionBlue" class="userName" data-uuid="${uuid}">@${tObj.val().nickname}</div> <button class="nofollowButton" data-uuid="${uuid}">Follow</button><button class="followButton hidden" data-uuid="${uuid}"><span>Following</span></button></div>`);
   let followuuid;
-  $(".followButton").off("click")
+  $(".followButton").off("click");
   $(".followButton").on("click", (event) => {
     followuuid = $(event.currentTarget).attr("data-uuid");
     let followref = rtdb.ref(db, `/users/${loggedUser.uid}/following/${followuuid}`);
@@ -841,8 +869,6 @@ rtdb.get(usrRef).then(ss => {
     renderFollowUser(i, i.key);
   });
 })
-
-
 
 
 let renderTweet = (tObj, uuid) => {
@@ -1012,7 +1038,7 @@ let renderReply = (tObj, uuid) => {
       <div class="tweet-box">
         <div data-uuid="${uuid}" class="user">
           <div id="selection">
-            <li><img src="${tObj.author.pic}" class="profilePic"></li>
+            <li><img data-uuid="${uuid}" src="${tObj.author.pic}" class="profilePic"></li>
             <li><div id="nicknameOnTweet">@${tObj.author.nickname}</div></li>
           </div>
         </div>
@@ -1049,8 +1075,7 @@ let renderReply = (tObj, uuid) => {
   let userPicRef = rtdb.ref(db, `users/${tObj.authorId}/profilePic`);
   rtdb.get(userPicRef).then(ss => {
     let profilePicURL = ss.val();
-    console.log(profilePicURL)
-    $(".profilePic").attr("src", `${profilePicURL}`);
+    $(`[data-uuid=${uuid}].profilePic`).attr("src", `${profilePicURL}`);
     let userPicTweetRef = rtdb.ref(db, `tweets/${uuid}/author/pic`);
     rtdb.set(userPicTweetRef, profilePicURL)
   })
@@ -1063,7 +1088,12 @@ let renderReply = (tObj, uuid) => {
 
   let likeref = rtdb.ref(db, `tweets/${uuid}/likes`);
   rtdb.onValue(likeref, ss => {
-    $(`[data-uuid=${uuid}].noLikes`).html(`${ss.val()}`);
+    if (ss.val() === null) {
+      $(`[data-uuid=${uuid}].noLikes`).html(`0`);
+    } else {
+      $(`[data-uuid=${uuid}].noLikes`).html(`${ss.val()}`);
+    }
+
   })
   let likeUserRef = rtdb.ref(db, `likes/${uuid}/${loggedUser.uid}`);
   rtdb.onValue(likeUserRef, ss => {
@@ -1099,23 +1129,27 @@ let initializeOnStart = (usr) => {
 let tweetRef = rtdb.ref(db, "/tweets");
 rtdb.onChildAdded(tweetRef, (ss) => {
   let tObj = ss.val();
-  let resultRef = rtdb.ref(db, `/users/${loggedUser.uid}/following`);
-  rtdb.get(resultRef).then((ss1) => {
-    let data = ss1.val()
-    let followIds = Object.keys(data).filter(fid => {
-      return data[fid];
-    })
-    for (var i = 0; i <= followIds.length; i++) {
-      if ((loggedUser.uid == ss.val().authorId) || (followIds[i] == ss.val().authorId)) {
-        renderTweet(tObj, ss.key);
-        likeTweet();
+  if (ss.val().authorId === loggedUser.uid) {
+    renderTweet(tObj, ss.key);
+    likeTweet();
+  } else {
+    let resultRef = rtdb.ref(db, `/users/${loggedUser.uid}/following`);
+    rtdb.get(resultRef).then((ss1) => {
+      let data = ss1.val()
+      let followIds = Object.keys(data).filter(fid => {
+        return data[fid];
+      })
+      for (var i = 0; i < followIds.length; i++) {
+        if ((followIds[i] == ss.val().authorId)) {
+          renderTweet(tObj, ss.key);
+          likeTweet();
+        }
       }
-    }
-  });
+    });
+  }
+
 
 });
-
-
 
 
 let likeTweet = () => {
